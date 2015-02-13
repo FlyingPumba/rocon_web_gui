@@ -164,6 +164,7 @@ function addUrl() {
     if (url == "" || url == "ws://") {
       url = "ws://localhost:9090";
     }
+    console.log(url);
 
     // add url
     $("#urlList").append(new Option(url));
