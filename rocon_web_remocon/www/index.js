@@ -23,6 +23,7 @@ $(document).ready(function () {
   deleteUrl();
   listItemSelect();
   startApp();
+  userLogin();
   getBrowser();
 
   if(defaultUrl != undefined) {
@@ -65,10 +66,12 @@ function setROSCallbacks() {
 
     $("#connectBtn").hide();
     $("#disconnectBtn").show();
+    $("#userlogin").show();
+    $("#loginBtn").show();
         
     initList();
     displayMasterInfo();
-    getRoles();
+    //getRoles();
     masterInfoMode();
   });
 
@@ -235,8 +238,10 @@ function displayMasterInfo() {
 */
 function getRoles() {
   var browser = getBrowser();
+  var user_name = $("#user").val();
   var request = new ROSLIB.ServiceRequest({
-    uri : 'rocon:/*/*/*/' + browser
+    uri : 'rocon:/*/*/*/' + browser,
+    user : user_name
   });
 
   callService(ros, '/concert/interactions/get_roles', 'rocon_interaction_msgs/GetRoles', request, function(result) {
@@ -268,9 +273,11 @@ function displayRoles() {
 */
 function getInteractions(selectedRole) {
   var browser = getBrowser();
+  var user_name = $("#user").val();
   var request = new ROSLIB.ServiceRequest({
     roles : [selectedRole],
-    uri : 'rocon:/*/*/*/' + browser
+    uri : 'rocon:/*/*/*/' + browser,
+    user : user_name
   });
 
   callService(ros, '/concert/interactions/get_interactions', 'rocon_interaction_msgs/GetInteractions', request, function(result) {
@@ -415,6 +422,13 @@ function listItemSelect() {
     var index = $(this).attr('id').charAt($(this).attr('id').length - 1);
     gFinalUrl = classifyInteraction(gListInteractions[index]);
     displayDescription(gListInteractions[index]);
+  });
+}
+
+function userLogin() {
+  //$("#userlogin").hide();
+  $("#loginBtn").click(function () {
+	getRoles();
   });
 }
 
