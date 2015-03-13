@@ -70,8 +70,6 @@ function setROSCallbacks() {
     $("#loginBtn").show();
         
     initList();
-    displayMasterInfo();
-    //getRoles();
     masterInfoMode();
   });
 
@@ -220,6 +218,7 @@ function deleteUrl() {
   * @function displayMasterInfo
 */
 function displayMasterInfo() {
+  $("#userlogin").hide();
   $("#selecturl").hide();
   $("#masterinfo").show();
 
@@ -426,10 +425,22 @@ function listItemSelect() {
 }
 
 function userLogin() {
-  //$("#userlogin").hide();
+  $("#userlogin").hide();
   $("#loginBtn").click(function () {
-	getRoles();
+    login();
   });
+}
+
+function login() {
+   var user_name = $("#user").val();
+   var user_pass = $("#pass").val();
+   ros.callOnConnection({
+        op: 'auth',
+        user: user_name,
+        pass: user_pass,
+    }); 
+    displayMasterInfo();
+    getRoles();
 }
 
 /**
@@ -511,6 +522,7 @@ function masterInfoMode() {
     $("#masterinfo").show();
     $("#urladdBtn").hide();
     $("#urldeleteBtn").hide();
+    $("#userlogin").show();
 }
 
 /**
@@ -523,6 +535,7 @@ function addUrlMode() {
     $("#masterinfo").hide();
     $("#urladdBtn").show();
     $("#urldeleteBtn").show();
+    $("#userlogin").hide();
 }
 
 /**
